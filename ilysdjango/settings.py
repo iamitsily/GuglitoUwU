@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'ilysdjangoApp', 'templates', 'Guglitouwu', 'static')
+    ]
 # Application definition
 
 INSTALLED_APPS = [
@@ -55,6 +57,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+                os.path.join(BASE_DIR, 'ilysdjangoApp', 'templates', 'Guglitouwu')
         ],
         'APP_DIRS': True,
         'OPTIONS': {

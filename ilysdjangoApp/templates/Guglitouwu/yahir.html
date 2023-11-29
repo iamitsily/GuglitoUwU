@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>NasaAPI</title>
+    <link rel="stylesheet" href="{% static '/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/assets/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static '/assets/css/Navbar-Centered-Brand-icons.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span
+                    class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><i
+                        class="fas fa-space-shuttle"></i></span><span>GUGLITOUWU</span></a><button
+                data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span
+                    class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-5">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="#">YAHIR - RENATA</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section class="position-relative py-4 py-xl-5">
+        <div class="container position-relative">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 col-lg-10 col-xl-10 col-xxl-8">
+                    <div class="card">
+                        <div class="card-body p-sm-5">
+                            <h2 class="text-center mb-4">GUGLITOUWU</h2>
+                            <form onsubmit="buscarPalabra(); return false;">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="palabraInput" placeholder="Ingrese una palabra" aria-label="Palabra a buscar" aria-describedby="button-addon2">
+                                    <button class="btn btn-primary" type="button" id="button-addon2" onclick="buscarPalabra()">Buscar</button>
+                                </div>
+                            </form>
+                            <!-- Aquí se mostrarán los resultados de la búsqueda -->
+                            <div id="resultados" class="mt-4">
+                                <!-- Los resultados se mostrarán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center bg-dark">
+        <div class="container text-white py-4 py-lg-5">
+            <ul class="list-inline">
+                <li class="list-inline-item me-4"></li>
+                <li class="list-inline-item"></li>
+            </ul>
+            <p class="text-muted mb-0">ilystx1@gmail.com</p>
+            <p class="text-muted mb-0">renatitapadilla@gmail.com</p>
+        </div>
+    </footer>
+    <script src="{% static '/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
