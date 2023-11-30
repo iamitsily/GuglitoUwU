@@ -1,6 +1,7 @@
 import os
 from django.http import HttpResponse, JsonResponse
 from django.template import Template, Context
+from ilysdjangoApp import buscadorURLS
 def home(request):
     return HttpResponse("ola a todos amigos de django")
 def guglito(request):
@@ -17,6 +18,6 @@ def guglito(request):
 
     return HttpResponse(documento)
 
-def buscarPalabra(palabra):
-    respuesta_json = buscadorURLS.buscar_palabra(palabra )
-    return JsonResponse(respuesta_json)
+def buscarPalabra(request, palabra):
+    respuesta = buscadorURLS.buscar_palabra(palabra)
+    return JsonResponse(respuesta, safe=False)

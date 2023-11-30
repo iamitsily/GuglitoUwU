@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>GUGLITOUWU</title>
+    <link rel="icon" href="{% static '/assets/img/a1.jpg' %}" type="image/png">
     <link rel="stylesheet" href="{% static '/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static '/assets/fonts/fontawesome-all.min.css' %}">
     <link rel="stylesheet" href="{% static '/assets/css/Navbar-Centered-Brand-icons.css' %}">
@@ -34,15 +35,19 @@
                     <div class="card">
                         <div class="card-body p-sm-5">
                             <h2 class="text-center mb-4">GUGLITOUWU</h2>
-                            <form onsubmit="buscarPalabra(); return false;">
+                            <form id="form-buscar">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" id="palabraInput" placeholder="Ingrese una palabra" aria-label="Palabra a buscar" aria-describedby="button-addon2">
-                                    <button class="btn btn-primary" type="button" id="button-addon2" onclick="buscarPalabra()">Buscar</button>
+                                    <input type="text" class="form-control" id="palabraInput"
+                                        placeholder="Ingrese una palabra" aria-label="Palabra a buscar"
+                                        aria-describedby="button-addon2">
+                                    <button class="btn btn-primary" type="button" id="button-addon2"
+                                        onclick="buscar()">Buscar</button>
                                 </div>
                             </form>
                             <!-- Aquí se mostrarán los resultados de la búsqueda -->
                             <div id="resultados" class="mt-4">
-                                <!-- Los resultados se mostrarán aquí -->
+
+
                             </div>
                         </div>
                     </div>
@@ -62,6 +67,143 @@
         </div>
     </footer>
     <script src="{% static '/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+        function buscar() {
+            document.getElementById('resultados').innerHTML = '';
+
+            var palabra = document.getElementById('palabraInput').value;
+
+            if (palabra.trim() === "") {
+                // Muestra una alerta de SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campo vacio',
+                    text: 'Ingrese una palabra antes de buscar.',
+                });
+                return;
+            }
+
+            // Validar que la palabra no contenga caracteres especiales
+            if (!/^[a-zA-Z]+$/.test(palabra)) {
+                // Muestra una alerta de SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Solo letras',
+                    text: 'Ingrese una palabra valida antes de buscar.',
+                });
+                return;
+            }
+
+            // Deshabilita el botón de búsqueda
+            document.getElementById('button-addon2').disabled = true;
+
+            // Muestra una alerta de "cargando"
+            Swal.fire({
+                title: 'Cargando...',
+                html: 'Por favor espere...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            fetch(`/buscar/${encodeURIComponent(palabra)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error de red: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (Object.keys(data).length === 0) {
+                        // Cierra la alerta y habilita el botón en caso de error
+                        Swal.fire('La palabra no existe en nuestro diccionario', 'La palabar que busca no la tenemos de momento :c', 'error');
+                        document.getElementById('button-addon2').disabled = false;
+                        return;
+                    } else {
+                        // Función para parsear la cadena y devolver un objeto JavaScript
+                        function parsearCadena(cadena) {
+                            // Dividir la cadena por el patrón ") ("
+                            const partes = cadena.split(') (');
+
+                            // Mapear las partes a un objeto JavaScript
+                            const resultado = partes.reduce((obj, parte) => {
+                                // Dividir cada parte por ", Frecuencia: "
+                                const [url, frecuencia] = parte.split(', Frecuencia: ');
+
+                                // Agregar la URL y frecuencia al objeto
+                                obj[url] = frecuencia;
+                                return obj;
+                            }, {});
+
+                            return resultado;
+
+                        }
+
+                        // Parsear la cadena completa
+                        const objetosResultado = Object.entries(data).map(([cadenaCompleta, frecuencia]) => ({
+                            cadenaCompleta,
+                            objetoResultado: parsearCadena(cadenaCompleta),
+                        }));
+
+                        // Ordenar por frecuencia descendente
+                        objetosResultado.sort((a, b) => {
+                            const frecuenciaA = Math.max(...Object.values(a.objetoResultado).map(Number));
+                            const frecuenciaB = Math.max(...Object.values(b.objetoResultado).map(Number));
+                            return frecuenciaB - frecuenciaA;
+                        });
+
+                        // Construir elementos HTML utilizando Bootstrap para cada tarjeta (card)
+                        for (const { objetoResultado } of objetosResultado) {
+                            for (const [url, frecuencia] of Object.entries(objetoResultado)) {
+                                const card = document.createElement('div');
+                                card.className = 'card mb-3';
+
+                                const cardBody = document.createElement('div');
+                                cardBody.className = 'card-body';
+
+                                const urlElement = document.createElement('a');
+                                urlElement.href = url;
+                                urlElement.innerText = url;
+
+                                const frecuenciaElement = document.createElement('p');
+                                frecuenciaElement.innerText = `Frecuencia de palabra: ${frecuencia}`;
+
+                                cardBody.appendChild(urlElement);
+                                cardBody.appendChild(frecuenciaElement);
+                                card.appendChild(cardBody);
+
+                                document.getElementById('resultados').appendChild(card);
+                            }
+                        }
+                    }
+                    // Cierra la alerta y habilita el botón después de mostrar resultados
+                    Swal.close();
+                    document.getElementById('button-addon2').disabled = false;
+
+                    Swal.fire({
+                        toast: true,
+                        title: "Listo!, se encontraron resultados :D",
+                        animation: true,
+                        position: 'top-right',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgrssBar: true
+                    });
+                })
+
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                    // Cierra la alerta y habilita el botón en caso de error
+                    Swal.fire('La palabra no existe en nuestro diccionario', 'La palabar que busca no la tenemos de momento :c', 'error');
+                    document.getElementById('button-addon2').disabled = false;
+
+                });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
