@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from ilysdjangoApp import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path("", include("ilysdjangoApp.urls")),
     path("", views.guglito),
     path("buscar/<str:palabra>", views.buscarPalabra)
 ]
+urlpatterns += staticfiles_urlpatterns()

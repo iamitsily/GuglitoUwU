@@ -1,4 +1,5 @@
 {% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +11,7 @@
     <link rel="stylesheet" type="text/css" src="{% static '/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" src="{% static '/assets/fonts/fontawesome-all.min.css' %}">
     <link rel="stylesheet" type="text/css" src="{% static '/assets/css/Navbar-Centered-Brand-icons.css' %}">
-</head>
+    <script src="{% static '/assets/bootstrap/js/bootstrap.min.js' %}"></script>
 
 <body>
     <nav class="navbar navbar-dark navbar-expand-md bg-dark py-3">
@@ -66,7 +67,7 @@
             <p class="text-muted mb-0">renatitapadilla@gmail.com</p>
         </div>
     </footer>
-    <script src="{% static '/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+
     <script>
         function buscar() {
             document.getElementById('resultados').innerHTML = '';
