@@ -3,6 +3,6 @@ from ilysdjangoApp import views
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("yahir/", views.yahir),
+    path("guglito/", views.guglito),
     
 ]
