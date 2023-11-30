@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-k@lkx!ww_#o$4+&&#$#j58+#abxthr#-1m-_vsp$i6+9xz6ym4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['guglitouwu.azurewebsites.net','http://127.0.0.1:8000/']
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'ilysdjangoApp', 'templates', 'Guglitouwu', 'static')
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ilysdjangoApp'
 ]
 
 MIDDLEWARE = [
