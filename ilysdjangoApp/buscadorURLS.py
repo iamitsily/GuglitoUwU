@@ -4,7 +4,7 @@ import os
 import json
 
 def buscar_palabra(palabra_buscada):
-    archivo = os.path.join('ilysdjangoApp', 'index3.txt')  # Reemplaza con la ruta a tu archivo
+    archivo = os.path.join('ilysdjangoApp', 'raiz_ind_inv.txt')  # Reemplaza con la ruta a tu archivo
     # Utilizamos un defaultdict para contar la frecuencia de cada URL
     frecuencia_urls = defaultdict(int)
 
